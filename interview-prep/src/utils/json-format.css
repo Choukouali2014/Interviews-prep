@@ -1,0 +1,11 @@
+ul, ol, li {
+    list-style-type: none; /* Removes bullets/numbers */
+}
+.node{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+button{
+    padding: 0px;
+}
