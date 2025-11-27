@@ -4,6 +4,7 @@ import { PaginationSSR } from './components/pagination-ssr';
 import { JsonFormat } from './utils/json-format';
 import {TreeFolder } from './utils/tree-folder';
 import {JsonViewer } from './utils/json-viewer';
+import { ObserverApi } from './components/observer-api';
 
 function App() {
 
@@ -12,7 +13,8 @@ function App() {
      {/* <PaginationSSR /> */}
      {/* <JsonFormat /> */}
      {/* <TreeFolder /> */}
-     <JsonViewer />
+     {/* <JsonViewer /> */}
+     <ObserverApi />
     </>
   )
 }
