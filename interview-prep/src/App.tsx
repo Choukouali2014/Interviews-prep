@@ -5,6 +5,7 @@ import { JsonFormat } from './utils/json-format';
 import {TreeFolder } from './utils/tree-folder';
 import {JsonViewer } from './utils/json-viewer';
 import { ObserverApi } from './components/observer-api';
+import { Scrollable } from './components/scrollable';
 
 function App() {
 
@@ -14,7 +15,8 @@ function App() {
      {/* <JsonFormat /> */}
      {/* <TreeFolder /> */}
      {/* <JsonViewer /> */}
-     <ObserverApi />
+     {/* <ObserverApi /> */}
+     <Scrollable />
     </>
   )
 }
