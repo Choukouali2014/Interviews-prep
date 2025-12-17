@@ -26,18 +26,34 @@ app.get("/todos/:id", async (req: Request, res: Response) => {
   return res.json({ todo: r.rows[0] });
 });
 
-app.post("/todos", async (req: Request, res: Response) => {
-  const { title } = req.body ?? {};
+app.get("/todos", async (req, res) => {
+  const pageRaw = String(req.query.page ?? "1");
+  const limitRaw = String(req.query.limit ?? "20");
 
-  if (typeof title !== "string" || title.trim().length === 0) {
-    return res.status(400).json({ error: "title is required" });
-  }
+  const page = Math.max(1, Number.parseInt(pageRaw, 10) || 1);
+  const limit = Math.min(100, Math.max(1, Number.parseInt(limitRaw, 10) || 20));
+  const offset = (page - 1) * limit;
 
-  const r = await pool.query(
-    "INSERT INTO todos (title) values ($1) Returning *",
-    [title.trim()]
+  // total count
+  const totalResult = await pool.query<{ count: string }>(
+    "SELECT COUNT(*)::text AS count FROM todos"
   );
-  res.status(201).json({ todo: r.rows[0] });
+  const total = Number(totalResult.rows[0]?.count ?? "0");
+  const totalPages = Math.max(1, Math.ceil(total / limit));
+
+  // page data
+  const dataResult = await pool.query(
+    "SELECT * FROM todos ORDER BY id DESC LIMIT $1 OFFSET $2",
+    [limit, offset]
+  );
+
+  res.json({
+    todos: dataResult.rows,
+    page,
+    limit,
+    total,
+    totalPages
+  });
 });
 
 app.patch("/todos/:id", async (req, res) => {
