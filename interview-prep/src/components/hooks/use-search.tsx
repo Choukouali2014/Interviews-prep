@@ -7,11 +7,11 @@ export const useSearch = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const lastCalled = useRef<number>(0);
 
-  const fetchResult  = (query: string) =>{
+  const fetchResult = (query: string) => {
     fetch(`https://api.artic.edu/api/v1/artworks/search?q=${query}`)
-        .then((res) => res.json())
-        .then((data) => setResults(data))
-        .catch(() => setResults([]));
+      .then((res) => res.json())
+      .then((data) => setResults(data))
+      .catch(() => setResults([]));
   };
 
   useEffect(() => {
@@ -22,20 +22,19 @@ export const useSearch = () => {
       setResults([]);
       return;
     }
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    if(elapsed > 1000){
-        fetchResult(query);
-        lastCalled.current = now;
-    }else{
-         timerRef.current = setTimeout(() => {
-            lastCalled.current = Date.now();
-      fetchResult(query);
-    }, 1000-elapsed);
-    }
 
-   
+    if (elapsed > 1000) {
+      fetchResult(query);
+      lastCalled.current = now;
+    } else {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      timerRef.current = setTimeout(() => {
+        lastCalled.current = Date.now();
+        fetchResult(query);
+      }, 1000 - elapsed);
+    }
 
     return () => {
       if (timerRef.current) {
