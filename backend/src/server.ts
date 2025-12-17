@@ -1,15 +1,22 @@
 import express, {Application, Request, Response } from "express";
 import { Bookmark } from "./bookmark";
+import { todosRouter } from "./todos/todos.routes";
+import { errorHandle } from "./middleware/errorHandler";
 
 const app: Application = express();
 
 // Enable JSON body parsing
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 
 const PORT = process.env.PORT || 3000;
 
 let bookmarks: Bookmark[] = [];
 let nextId = 1;
+
+// Todos
+
+app.use("/todos", todosRouter);
+app.use(errorHandle);
 
 app.get('/', (req:Request, res: Response)=>{
     res.send("Hello World!");
