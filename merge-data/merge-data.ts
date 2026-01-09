@@ -18,5 +18,5 @@ export default function mergeData(sessions: Array<Session>): Array<Session> {
   }
 
     console.log(Object.values(mergedData));
-  return userOrders.map(   (user) => mergedData[user] );
+  return userOrders.map( (user) => mergedData[user] );
 }
